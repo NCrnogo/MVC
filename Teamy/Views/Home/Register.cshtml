@@ -52,16 +52,11 @@
                                 @Html.EditorFor(model => model.Pwd, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
                                 @Html.ValidationMessageFor(model => model.Pwd, "The password is required", new { @class = "text-danger" })
                             </div>
-                            <div class="form-group login-group-checkbox">
-                                <input type="checkbox" id="lg_remember" name="lg_remember">
-                                <label for="lg_remember">remember</label>
-                            </div>
                         </div>
                         <button type="submit" value="Save" class="login-button"><i class="fa fa-chevron-right"></i></button>
                     </div>
                     <div class="etc-login-form">
-                        <p>forgot your password? <a href="#">click here</a></p>
-                        <p>new user? @Html.ActionLink("Go Login! ", "Login")</p>
+                        <p>New user? @Html.ActionLink("Go Login! ", "Login")</p>
                     </div>
                 </form>
             </div>

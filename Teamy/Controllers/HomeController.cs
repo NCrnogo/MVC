@@ -45,23 +45,24 @@ namespace Teamy.Controllers
         public ActionResult Register(Users user)
         {
             int a = Repository.Repository.CreateUser(user);
+            Session["Uspjeh"] = "Uspjeh";
             if ((string)Session["Uspjeh"] != "Uspjeh")
             {
                 return View();
             }
             else
-            {
+            { 
                 return RedirectToAction("Index");
             }
         }
 
         public ActionResult EditProfile(string id)
         {
-            Users a = Repository.Repository.GetUsers((string)Session["id"]);
             if ((string)Session["Uspjeh"] != "Uspjeh")
             {
                 return RedirectToAction("Login");
             }
+            Users a = Repository.Repository.GetUsers((string)Session["id"]);
             a.Pwd = "*******";
             return View(a);
             
@@ -79,8 +80,50 @@ namespace Teamy.Controllers
 
         }
 
-
         public ActionResult Index()
+        {
+            if ((string)Session["Uspjeh"] != "Uspjeh")
+            {
+                return RedirectToAction("Login");
+            }
+            Users a = new Users();
+            List<Teams> teams = new List<Teams>();
+            teams = Repository.Repository.GetTeams((string)Session["id"]);
+            foreach (var team in teams)
+            {
+                if(team.TeacherID == -1)
+                {
+                    team.TeacherName = "Profesor nije dodan";
+                }
+                else
+                {
+                    a= Repository.Repository.GetUsers(team.TeacherID.ToString());
+                    team.TeacherName = a.Name;
+                }
+                a = Repository.Repository.GetUsers(team.OwnerID.ToString());
+                team.OwnerName = a.Name;
+            }
+            return View(teams);
+        }
+
+        public ActionResult JoinTeam()
+        {
+            if ((string)Session["Uspjeh"] != "Uspjeh")
+            {
+                return RedirectToAction("Login");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult JoinTeam(Teams team)
+        {
+            ViewBag.JoinTeam = "Request to join team has been sent!";
+            Repository.Repository.JoinTeam((string)Session["id"],team.Name);
+            return View();
+        }
+
+        public ActionResult CreateTeam()
         {
             return View();
         }

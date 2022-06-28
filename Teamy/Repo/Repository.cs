@@ -19,12 +19,19 @@ namespace Teamy.Repository
 
         public static int CheckLogin(Users user)
         {
-            using(var client = new HttpClient())
+            try
             {
-                var endpoint = new Uri(url + "User/uname=" + user.Name + "&pwd=" + user.Pwd);
-                var result = client.GetAsync(endpoint).Result;
-                var json = result.Content.ReadAsStringAsync().Result;
-                return JsonConvert.DeserializeObject<int>(json);
+                using (var client = new HttpClient())
+                {
+                    var endpoint = new Uri(url + "User/uname=" + user.Name + "&pwd=" + user.Pwd);
+                    var result = client.GetAsync(endpoint).Result;
+                    var json = result.Content.ReadAsStringAsync().Result;
+                    return JsonConvert.DeserializeObject<int>(json);
+                }
+            }
+            catch (Exception ex)
+            {
+                return -1;
             }
         }
 
@@ -52,7 +59,7 @@ namespace Teamy.Repository
             }
         }
 
-        internal static Users GetUpdatedUser(Users user)
+        public static Users GetUpdatedUser(Users user)
         {
             using (var client = new HttpClient())
             {
@@ -65,8 +72,33 @@ namespace Teamy.Repository
             }
         }
 
+        public static List<Teams> GetTeams(string sessionId)
+        {
+            using (var client = new HttpClient())
+            {
+                var endpoint = new Uri(url + "Teams/id=" + sessionId);
+                var result = client.GetAsync(endpoint).Result;
+                var json = result.Content.ReadAsStringAsync().Result;
+                return JsonConvert.DeserializeObject<List<Teams>>(json);
+            }
+        }
 
+        internal static void JoinTeam(string sessionId, string teamName)
+        {
+            InviteUser userInvite = new InviteUser
+            {
+                UserId = sessionId,
+                TeamName = teamName
+            };
 
-
+            using (var client = new HttpClient())
+            {
+                var endpoint = new Uri(url + "Teams");
+                var newUserJson = JsonConvert.SerializeObject(userInvite);
+                var payload = new StringContent(newUserJson, Encoding.UTF8, "application/json");
+                var result = client.PostAsync(endpoint, payload).Result;
+                var json = result.Content.ReadAsStringAsync().Result;
+            }
+        }
     }
 }
