@@ -93,7 +93,64 @@ namespace Teamy.Repository
 
             using (var client = new HttpClient())
             {
-                var endpoint = new Uri(url + "Teams");
+                var endpoint = new Uri(url + "Teams/CreateInvite");
+                var newUserJson = JsonConvert.SerializeObject(userInvite);
+                var payload = new StringContent(newUserJson, Encoding.UTF8, "application/json");
+                var result = client.PostAsync(endpoint, payload).Result;
+                var json = result.Content.ReadAsStringAsync().Result;
+            }
+        }
+
+        internal static void CreateTeam(Teams team)
+        {
+            using (var client = new HttpClient())
+            {
+                var endpoint = new Uri(url + "Teams/CreateTeam");
+                var newUserJson = JsonConvert.SerializeObject(team);
+                var payload = new StringContent(newUserJson, Encoding.UTF8, "application/json");
+                var result = client.PostAsync(endpoint, payload).Result;
+                var json = result.Content.ReadAsStringAsync().Result;
+            }
+        }
+
+        internal static List<InviteUser> GetInvites(string sessionId)
+        {
+            using (var client = new HttpClient())
+            {
+                var endpoint = new Uri(url + "Teams/idInvitedUser=" + sessionId);
+                var result = client.GetAsync(endpoint).Result;
+                var json = result.Content.ReadAsStringAsync().Result;
+                return JsonConvert.DeserializeObject<List<InviteUser>>(json);
+            }
+        }
+
+        internal static void JoinTeamThroughInvite(string teamName,string sessionId)
+        {
+            InviteUser userInvite = new InviteUser
+            {
+                UserId = sessionId,
+                TeamName = teamName
+            };
+            using (var client = new HttpClient())
+            {
+                var endpoint = new Uri(url + "Teams/JoinTeamThroughInvite");
+                var newUserJson = JsonConvert.SerializeObject(userInvite);
+                var payload = new StringContent(newUserJson, Encoding.UTF8, "application/json");
+                var result = client.PostAsync(endpoint, payload).Result;
+                var json = result.Content.ReadAsStringAsync().Result;
+            }
+        }
+
+        internal static void DismissJoinTeamThroughInvite(string teamName, string sessionId)
+        {
+            InviteUser userInvite = new InviteUser
+            {
+                UserId = sessionId,
+                TeamName = teamName
+            };
+            using (var client = new HttpClient())
+            {
+                var endpoint = new Uri(url + "Teams/DismissJoinTeamThroughInvite");
                 var newUserJson = JsonConvert.SerializeObject(userInvite);
                 var payload = new StringContent(newUserJson, Encoding.UTF8, "application/json");
                 var result = client.PostAsync(endpoint, payload).Result;

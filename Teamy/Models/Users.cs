@@ -20,6 +20,7 @@ namespace Teamy.Models
         [DataMember(Order = 2)]
         public string Roll { get; set; }
         [Required]
+        [DataType(DataType.Password)]
         [DataMember(Order = 3)]
         public string Pwd { get; set; }
         [DataMember(Order = 4)]

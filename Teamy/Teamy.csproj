@@ -208,9 +208,9 @@
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Home\EditProfile.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Something.cshtml" />
     <Content Include="Views\Home\JoinTeam.cshtml" />
     <Content Include="Views\Home\CreateTeam.cshtml" />
+    <Content Include="Views\Home\Invites.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

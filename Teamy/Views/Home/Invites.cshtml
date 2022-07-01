@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Teamy.Models.InviteUser>
+
+@{
+    ViewBag.Title = "Invites";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Invites</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TeamName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TeamName)
+        </td>
+        <td>
+            @Html.ActionLink("Accept", "InvitesAccepted", new { teamName = item.TeamName }) |
+            @Html.ActionLink("Dismiss", "InvitesDismissed", new { teamName = item.TeamName, userId = item.UserId })
+        </td>
+    </tr>
+}
+
+</table>
