@@ -1,3 +1,9 @@
+use master 
+go
+
+use TeamyDB
+go
+
 CREATE PROC createUser
 @name varchar(50),
 @roll int,
@@ -12,9 +18,9 @@ SET @id=SCOPE_IDENTITY()
 INSERT INTO UserRollMappings VALUES (@id,@roll)
 GO
 
-Exec createUser @name='Ivo',@roll=1,@date='2022-02-03',@pwd='12345',@id=1
 
 SELECT * FROM Users
+go
 
 CREATE PROC getUsers
 AS
@@ -33,7 +39,7 @@ AS
 GO
 
 EXEC getUser @id=2
-
+go
 
 CREATE PROC getTeams
 AS

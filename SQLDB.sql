@@ -9,6 +9,15 @@ go
 use TeamyDB
 go
 
+create table Users(
+	IDUser int primary key identity(1,1),
+	[PasswordHash] [binary](64) NOT NULL,
+	[Salt] [nvarchar](36) NOT NULL,
+	LoginName nvarchar(50) unique not null, --email
+	DateCreated char(10) not null, --YYYY-MM-DD date format
+)
+go
+
 CREATE table Teams
 (
 	IDTeam int primary key identity(1,1),
@@ -32,15 +41,6 @@ CREATE TABLE TeamInvites(
 	TeamID int FOREIGN KEY REFERENCES Teams(IDTeam) not null,
 	UserID int FOREIGN KEY REFERENCES Users(IDUser) not null,
 	Invited int
-)
-go
-
-create table Users(
-	IDUser int primary key identity(1,1),
-	[PasswordHash] [binary](64) NOT NULL,
-	[Salt] [nvarchar](36) NOT NULL,
-	LoginName nvarchar(50) unique not null, --email
-	DateCreated char(10) not null, --YYYY-MM-DD date format
 )
 go
 
