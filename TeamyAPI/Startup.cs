@@ -16,7 +16,7 @@ namespace TeamyAPI
 {
     public class Startup
     {
-        SqlConnection con = new SqlConnection(@"server=(localdb)\mojLokalniDb;database=TeamyDB; Integrated Security = true;");
+        SqlConnection con = new SqlConnection(@"server=.;database=TeamyDB;uid=sa;pwd=SQL;");
         SqlCommand cmd;
         SqlDataReader dr;
         private List<Users> listUsers = new List<Users>();
@@ -87,8 +87,9 @@ namespace TeamyAPI
             }
 
             app.UseRouting();
-
+            app.UseStaticFiles();
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
